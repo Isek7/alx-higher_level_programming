@@ -1,39 +1,23 @@
-#include <stdio.h>
+#include "Python.h"
 
-/*
-* Author: Isek7
-* Email: bengabrielisek@gmail.com
-* Date: October 6, 2023
-* Module: listinfo
-* Purpose: Prints some basic info about Python lists
-*/
-
-#define PY_SSIZE_T_CLEAN
-#include <python.h>
-#include <stdlib.h>
-
-/**
-* print_python_list_info - prints python list info
-*
-* @p: PyObject
-* Return: no return
-*/
 void print_python_list_info(PyObject *p)
 {
-long int size, i;
 PyListObject *list;
-PyObject *item;
+Py_ssize_t size, i;
+PyObject *object;
+struct _typeobject *type;
 
-size = Py_SIZE(p);
-printf("[*] Size of the Python List = %ld\n", size);
-
+if (strcmp(p->ob_type->tp_name, "list") == 0)
+{
 list = (PyListObject *)p;
+size = list->ob_base.ob_size;
+printf("[*] Size of the Python List = %ld\n", size);
 printf("[*] Allocated = %ld\n", list->allocated);
-
 for (i = 0; i < size; i++)
 {
-item = PyList_Get_ITEM(p, i);
-printf("Element %ld: ", i);
-printf("%s\n", Py_TYPE(item)->tp_name);
+object = list->ob_item[i];
+type = object->ob_type;
+printf("Element %ld: %s\n", i, type->tp_name);
+}
 }
 }
