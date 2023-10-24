@@ -1,118 +1,59 @@
 #!/usr/bin/python3
-
-"""class definition"""
-
-
-class Square:
-    """A class definition of a square"""
-
-    def __init__(self, size=0):
-        """Initialize the square size"""
-
-        if not isinstance(size, int):
-            raise TypeError("size must be an integer")
-        if size < 0:
-            raise ValueError("size must be >= 0")
-
-        self.__size = size
-
-    @property
-    def size(self):
-        """Initialize the getter for size"""
-
-        return self.__size
-
-    @size.setter
-    def size(self, size):
-        """Initialize the setter for size"""
-
-        if not isinstance(size, int):
-            raise TypeError("size must be an integer")
-        if size < 0:
-            raise ValueError("size must be >= 0")
-
-        self.__size = size
-
-    def area(self):
-        """Compute the area of the square."""
-
-        return self.__size * self.__size
-
-    def my_print(self):
-        """print the square using '#' symbol"""
-
-        i = 0
-        if not self.__size:
-            print()
-            return
-
-        while i < self.__size:
-            j = 0
-            while j < self.__size - 1:
-                print("#", end='')
-                j += 1
-            print("#")
-            i += 1
-        """An update to my_print method: A better way to have written the loop;
-            for i in range(self.size):
-                s = '#' * self.size
-                print(s)"""#!/usr/bin/python3
-
-
-"""class definition"""
+"""Defines a class Square"""
 
 
 class Square:
-    """A class definition of a square"""
-
+    """Represents a square
+    Attributes:
+        __size (int): size of a side of the square
+    """
     def __init__(self, size=0):
-        """Initialize the square size"""
+        """initializes the square
+        Args:
+            size (int): size of a side of the square
+        Returns:
+            None
+        """
+        self.size = size
 
-        if not isinstance(size, int):
-            raise TypeError("size must be an integer")
-        if size < 0:
-            raise ValueError("size must be >= 0")
-
-        self.__size = size
+    def area(self):
+        """calculates the square's area
+        Returns:
+            The area of the square
+        """
+        return (self.__size) ** 2
 
     @property
     def size(self):
-        """Initialize the getter for size"""
-
+        """getter of __size
+        Returns:
+            The size of the square
+        """
         return self.__size
 
     @size.setter
-    def size(self, size):
-        """Initialize the setter for size"""
-
-        if not isinstance(size, int):
+    def size(self, value):
+        """setter of __size
+        Args:
+            value (int): size of a side of the square
+        Returns:
+            None
+        """
+        if type(value) is not int:
             raise TypeError("size must be an integer")
-        if size < 0:
-            raise ValueError("size must be >= 0")
-
-        self.__size = size
-
-    def area(self):
-        """Compute the area of the square."""
-
-        return self.__size * self.__size
+        else:
+            if value < 0:
+                raise ValueError("size must be >= 0")
+            else:
+                self.__size = value
 
     def my_print(self):
-        """print the square using '#' symbol"""
-
-        i = 0
-        if not self.__size:
+        """prints the square
+        Returns:
+            None
+        """
+        if self.__size == 0:
             print()
             return
-
-        while i < self.__size:
-            j = 0
-            while j < self.__size - 1:
-                print("#", end='')
-                j += 1
-            print("#")
-            i += 1
-        """An update to my_print method: A better way to have written the loop;
-            for i in range(self.size):
-                s = '#' * self.size
-                print(s)"""
+        for i in range(self.__size):
+            print("".join(["#" for j in range(self.__size)]))
