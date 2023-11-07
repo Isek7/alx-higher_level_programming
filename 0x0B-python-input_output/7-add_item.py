@@ -1,30 +1,18 @@
 #!/usr/bin/python3
+"""add item"""
 
 
-"""file json module"""
-from sys import argv
+import json
+import sys
+import os.path
+
 save_to_json_file = __import__('5-save_to_json_file').save_to_json_file
 load_from_json_file = __import__('6-load_from_json_file').load_from_json_file
 
-
-def add_item():
-    """Add all arguments to a python list and save it to a json file"""
-
-    _len = len(argv)
-    mylist = []
-
-    try:
-        mylist = load_from_json_file("add_item.json")
-    except Exception:
-        save_to_json_file(mylist, "add_item.json")
-
-    if _len < 2:
-        return
-
-    for i in range(1, _len):
-        mylist.append(argv[i])
-
-    save_to_json_file(mylist, "add_item.json")
-
-
-add_item()
+filename = "add_item.json"
+if os.path.isfile(filename):
+    obj = load_from_json_file(filename)
+else:
+    obj = []
+obj.extend(sys.argv[1:])
+save_to_json_file(obj, filename)
