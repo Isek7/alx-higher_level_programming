@@ -1,17 +1,17 @@
 #!/usr/bin/python3
-
 """
-City model - will be the base model for all cities
+Contains the class definition of a City
 """
-
-from sqlalchemy import Integer, String, Column
-from sqlalchemy.sql.schema import ForeignKey
-from model_state import State, Base
+from model_state import Base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
 
 
 class City(Base):
-    """Maps this table to the corresponding sql table"""
+    """
+    Class that defines each city
+    """
     __tablename__ = 'cities'
-    id = Column(Integer, nullable=False, primary_key=True)
+    id = Column(Integer, unique=True, nullable=False, primary_key=True)
     name = Column(String(128), nullable=False)
-    state_id = Column(Integer, ForeignKey('states.id'))
+    state_id = Column(Integer, ForeignKey("states.id"), nullable=False)

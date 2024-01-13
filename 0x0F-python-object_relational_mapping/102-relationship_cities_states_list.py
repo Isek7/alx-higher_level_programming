@@ -1,23 +1,24 @@
 #!/usr/bin/python3
-
 """
-Creates the State “California” with the City.
-“San Francisco” from the database hbtn_0e_100_usa.
+Lists all City objects from the database hbtn_0e_101_usa
 """
-from sys import argv
-from sqlalchemy.orm import session
-from sqlalchemy.orm.session import Session
+import sys
+from relationship_state import Base, State
+from relationship_city import City
 from sqlalchemy import create_engine
-from relationship_city import Base, City
-from relationship_state import State
+from sqlalchemy.orm import sessionmaker
+
 
 if __name__ == '__main__':
-    engine = create_engine(
-        f'mysql+mysqldb://{argv[1]}:{argv[2]}@localhost/{argv[3]}')
-    Base.metadata.create_all(engine)
-    session = Session(engine)
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'.
+                           format(sys.argv[1], sys.argv[2], sys.argv[3]),
+                           pool_pre_ping=True)
 
-    result = session.query(City, State).filter(City.state_id == State.id).all()
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-    for res in result:
-        print(f'{res[0].id}: {res[0].name} -> {res[1].name}')
+    st = session.query(State).join(City).order_by(City.id).all()
+
+    for state in st:
+        for city in state.cities:
+            print("{}: {} -> {}".format(city.id, city.name, state.name))
