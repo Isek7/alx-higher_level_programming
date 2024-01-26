@@ -1,27 +1,18 @@
 #!/usr/bin/python3
-
-"""
-Sends a POST request to passed URL with a letter as parameter and displays
-the body of the response
-"""
+"""Script that sends a POST request with data in the variable q"""
 
 import requests
-import sys
+from sys import argv
 
-
-def main():
-    url = 'http://0.0.0.0:5000/search_user'
-    if len(sys.argv) < 2:
-        q = {'q': ""}
-    else:
-        q = {'q': sys.argv[1]}
-    res = requests.post(url, data=q)
+if __name__ == '__main__':
+    url = "http://0.0.0.0:5000/search_user"
+    data = {"q": argv[1][0] if len(argv) > 1 else ""}
+    response = requests.post(url, data=data)
     try:
-        obj = res.json()
-        if not obj:
-            print('No result')
+        d = response.json()
+        if not d:
+            print("No result")
         else:
-            print(f"[{obj.get('id')}] {obj.get('name')}")
-    except Exception:
-        print('Not a valid JSON')
-
+            print("[{}] {}".format(d.get("id"), d.get("name")))
+    except ValueError:
+        print("Not a valid JSON")
